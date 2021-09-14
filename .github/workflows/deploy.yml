@@ -18,7 +18,7 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: >
-          :scales: [[{{ SHORT_SHA }}](https://github.com/{{ GITHUB_REPOSITORY }}/commit/{{ SHORT_SHA }})] [Starting metrics.kolibri.finance build...](https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}?check_suite_focus=true)
+          :chart_with_upwards_trend: [[{{ SHORT_SHA }}](<https://github.com/{{ GITHUB_REPOSITORY }}/commit/{{ SHORT_SHA }})>] [Starting metrics.kolibri.finance build...](<https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}?check_suite_focus=true>)
           ```${{ github.event.head_commit.message }}```
 
   build_and_deploy_frontend:
@@ -51,5 +51,5 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: >
-          :scales: [[{{ SHORT_SHA }}](https://github.com/{{ GITHUB_REPOSITORY }}/commit/{{ SHORT_SHA }})] [metrics.kolibri.finance deploy successful!](https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}?check_suite_focus=true)
+          :chart_with_upwards_trend: [[{{ SHORT_SHA }}](<https://github.com/{{ GITHUB_REPOSITORY }}/commit/{{ SHORT_SHA }}>)] [metrics.kolibri.finance deploy successful!](<https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}?check_suite_focus=true>)
           ```${{ github.event.head_commit.message }}```
