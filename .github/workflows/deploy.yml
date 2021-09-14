@@ -1,0 +1,55 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  notify_init:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Add SHORT_SHA env property with commit short sha
+      run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
+    - name: Discord notification PR
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: >
+          :scales: [[{{ SHORT_SHA }}](https://github.com/{{ GITHUB_REPOSITORY }}/commit/{{ SHORT_SHA }})] [Starting metrics.kolibri.finance build...](https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}?check_suite_focus=true)
+          ```${{ github.event.head_commit.message }}```
+
+  build_and_deploy_frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+    - name: "Build & Deploy Frontend"
+      run: |
+        npm i
+        npm run build
+    - uses: cloudflare/wrangler-action@1.2.0
+      if: github.ref == 'refs/heads/master' # Only deploy on merge to master
+      env:
+        USER: root
+      with:
+        apiToken: ${{ secrets.CF_API_TOKEN }}
+        environment: 'production'
+
+  notify_complete:
+    runs-on: ubuntu-latest
+    needs:
+      - build_and_deploy_frontend
+    steps:
+    - name: Add SHORT_SHA env property with commit short sha
+      run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
+    - name: Discord notification PR
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: >
+          :scales: [[{{ SHORT_SHA }}](https://github.com/{{ GITHUB_REPOSITORY }}/commit/{{ SHORT_SHA }})] [metrics.kolibri.finance deploy successful!](https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}?check_suite_focus=true)
+          ```${{ github.event.head_commit.message }}```
