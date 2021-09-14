@@ -1,4 +1,4 @@
-# stats.kolibri.finance
+# metrics.kolibri.finance
 
 ## Project setup
 ```
