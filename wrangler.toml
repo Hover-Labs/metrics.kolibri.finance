@@ -9,7 +9,7 @@ entry-point = "workers-site"
 
 [env.production]
 # The ID of the domain to deploying to
-zone_id = "e44c36cd96acdf6e53821fa981d3df49"
+zone_id = "211e36c6e111bb2821f93495fb73b4f6"
 
 # The route pattern your Workers application will be served at
 route = "metrics.kolibri.finance/*"
