@@ -10,13 +10,17 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Component from 'vue-class-component'
 
 enum networks {
   MAIN = 'mainnet',
   GRANADA = 'granadanet'
 }
 
-export default Vue.component({
+@Component
+export default class MainPage extends Vue {
+  private network = networks.MAIN
+
   mounted(): void {
     const newNetwork = this.$route.query.network
     if (Object.values(networks).includes(newNetwork as networks) && newNetwork !== 'mainnet'){
@@ -25,14 +29,8 @@ export default Vue.component({
       // Redirect without any query to default to mainnet
       this.$router.push(this.$route.path)
     }
-  },
-  data(){
-    return {
-      network: null,
-    }
   }
-})
-
+}
 </script>
 
 <style lang="scss">
