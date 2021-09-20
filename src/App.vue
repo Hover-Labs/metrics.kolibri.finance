@@ -10,12 +10,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Component from 'vue-class-component'
 
 enum networks {
   MAIN = 'mainnet',
   GRANADA = 'granadanet'
 }
 
+@Component
 export default class MainPage extends Vue {
   private network = networks.MAIN
 
